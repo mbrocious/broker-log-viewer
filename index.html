@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Log Viewer</title>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="DateTime.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+<script>
+  // var socket = io.connect('http://localhost:8585');
+  // socket.on('news', function (data) {
+  //   console.log(data);
+  //   socket.emit('my other event', { my: 'data' });
+  // });
+
+
+
+$(document).ready(function() {
+    var socket = io.connect('http://localhost:8585');
+    var container = $('#container');
+
+
+	// The following function makes every new chunk of data it receives displayed inside a div.
+    socket.on('new-data', function(data) {
+    	var dt = new DateTime();
+    	var strDt = dt.sym.t.hh + ':' + dt.sym.t.mm + ':' + dt.sym.t.ss + '.' + dt.sym.t.mss
+        var newItem = $('<div>' + strDt + ':' + data.value + '</div>');
+        container.append(newItem);
+    });
+});
+
+
+</script>
+
+</head>
+
+<body>
+	<h1>Broker Messages</h1>
+  	<div id="container"></div>
+</body>
+
+</html>
